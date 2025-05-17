@@ -21,6 +21,13 @@ local function makeBtn(label, y, fn)
     B.MouseButton1Click:Connect(fn)
 end
 
+makeBtn("🛍 Открыть 100 яйца (ID 8)", 130, function()
+    print("➡️ Покупка 99 яиц подряд")
+    for i = 1, 100 do
+        pcall(function() R.BuyEgg:FireServer(8) end)
+    end
+end)
+
 makeBtn("🛍 Открыть 100 яйца (ID 7)", 130, function()
     print("➡️ Покупка 3 яиц подряд")
     for i = 1, 100 do
