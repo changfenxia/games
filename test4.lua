@@ -21,11 +21,10 @@ local function makeBtn(label, y, fn)
     B.MouseButton1Click:Connect(fn)
 end
 
-makeBtn("🛍 Открыть 3 яйца (ID 5)", 100, function()
+makeBtn("🛍 Открыть 3 яйца (ID 7)", 100, function()
     print("➡️ Покупка 3 яиц подряд")
     for i = 1, 3 do
-        pcall(function() R.BuyEgg:FireServer(5) end)
-        wait(0.2)
+        pcall(function() R.BuyEgg:FireServer(7) end)
     end
 end)
 
@@ -35,30 +34,8 @@ makeBtn("🎲 HatchEgg (рандом)", 160, function()
     local val2 = math.random(1, 300)
     print("➡️ HatchEgg:", petName, val1, val2)
     pcall(function()
-        R.HatchEgg:FireServer(3, petName, val1, val2, false, nil, false, false, false, 0, false, nil)
+        R.HatchEgg:FireServer(3)
     end)
-end)
-
-makeBtn("🎲 AutoFuse → random bool", 200, function()
-    local value = (math.random() > 0.5)
-    print("➡️ AutoFuse:", value)
-    pcall(function() R.AutoFuse:FireServer(value) end)
-end)
-
-makeBtn("🎲 SetAutoFuse → random bool", 240, function()
-    local value = (math.random() > 0.5)
-    print("➡️ SetAutoFuse:", value)
-    pcall(function() R.SetAutoFuse:FireServer(value) end)
-end)
-
-makeBtn("⚙ SetFilterSetting_Fuse → {}", 280, function()
-    print("➡️ SetFilterSetting_Fuse: {}")
-    pcall(function() R.SetFilterSetting_Fuse:FireServer({}) end)
-end)
-
-makeBtn("🥚 SetGeneratorEgg → MythicEgg", 320, function()
-    print("➡️ SetGeneratorEgg: MythicEgg")
-    pcall(function() R.SetGeneratorEgg:FireServer("MythicEgg") end)
 end)
 
 -- Реагировать сразу на появление кнопки "Continue"
