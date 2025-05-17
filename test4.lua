@@ -1,51 +1,61 @@
-print("🧪 Экспериментальный Hatch/Fuse запущен")
+print("🧪 Remote Tester + Spy запущен")
 
 local RS = game:GetService("ReplicatedStorage")
 local R = RS.Remotes
 local CG = game:GetService("CoreGui")
-local P = game.Players.LocalPlayer
 
 local UI = Instance.new("ScreenGui", CG)
-UI.Name = "TestHatchFuse"
+UI.Name = "RemoteTesterSpy"
 UI.ResetOnSpawn = false
 
-local function makeButton(text, pos, callback)
-    local b = Instance.new("TextButton", UI)
-    b.Size = UDim2.new(0, 200, 0, 40)
-    b.Position = pos
-    b.Text = text
-    b.BackgroundColor3 = Color3.fromRGB(35, 150, 255)
-    b.TextColor3 = Color3.new(1,1,1)
-    b.Font = Enum.Font.SourceSansBold
-    b.TextSize = 18
-    b.MouseButton1Click:Connect(callback)
+local function makeBtn(label, y, fn)
+    local B = Instance.new("TextButton", UI)
+    B.Size = UDim2.new(0, 240, 0, 36)
+    B.Position = UDim2.new(0, 20, 0, y)
+    B.Text = label
+    B.BackgroundColor3 = Color3.fromRGB(50, 150, 255)
+    B.TextColor3 = Color3.new(1,1,1)
+    B.Font = Enum.Font.SourceSansBold
+    B.TextSize = 16
+    B.MouseButton1Click:Connect(fn)
 end
 
--- 🥚 Симулировать HatchEgg
-makeButton("🔁 HatchEgg Test", UDim2.new(0, 20, 0, 100), function()
-    print("➡️ Fire: HatchEgg")
-    R.HatchEgg:FireServer(3, "Spirit_Angelic", 215, 215, false, nil, false, false, false, 0, false, nil)
+makeBtn("🧬 AutoFuse → true", 100, function()
+    print("➡️ AutoFuse: true")
+    pcall(function() R.AutoFuse:FireServer(true) end)
 end)
 
--- 🧬 Симулировать FusePets
-makeButton("🧬 FusePets Test", UDim2.new(0, 20, 0, 150), function()
-    print("➡️ Fire: FusePets")
-    R.FusePets:FireServer("VampireBat_1", 221, 221, false, false, false, false, false, nil)
+makeBtn("🛠 SetAutoFuse → true", 140, function()
+    print("➡️ SetAutoFuse: true")
+    pcall(function() R.SetAutoFuse:FireServer(true) end)
 end)
 
--- 🔎 Поиск и вывод всех RemoteEvent с "Egg" и "Fuse"
-for _, r in pairs(R:GetChildren()) do
-    if r:IsA("RemoteEvent") and (r.Name:lower():find("egg") or r.Name:lower():find("fuse")) then
-        print("📡 Найден Remote:", r.Name)
-    end
-end
+makeBtn("⚙ SetFilterSetting_Fuse → {}", 180, function()
+    print("➡️ SetFilterSetting_Fuse: {}")
+    pcall(function() R.SetFilterSetting_Fuse:FireServer({}) end)
+end)
 
--- 🔄 Слушать все OnClientEvent для анализа
+makeBtn("🥚 SetGeneratorEgg → MythicEgg", 220, function()
+    print("➡️ SetGeneratorEgg: MythicEgg")
+    pcall(function() R.SetGeneratorEgg:FireServer("MythicEgg") end)
+end)
+
+makeBtn("🐣 HatchFirstEgg", 260, function()
+    print("➡️ HatchFirstEgg")
+    pcall(function() R.HatchFirstEgg:FireServer() end)
+end)
+
+makeBtn("🛍 BuyEgg → 3", 300, function()
+    print("➡️ BuyEgg: 3")
+    pcall(function() R.BuyEgg:FireServer(3) end)
+end)
+
+-- 🔍 Подключаемся ко всем RemoteEvent.OnClientEvent для шпионажа
 for _, remote in pairs(R:GetChildren()) do
     if remote:IsA("RemoteEvent") then
         pcall(function()
             remote.OnClientEvent:Connect(function(...)
-                warn("📡 OnClientEvent:", remote.Name, ...)
+                print("🕵️‍♂️ OnClientEvent ▶", remote.Name, ...)
             end)
         end)
     end
