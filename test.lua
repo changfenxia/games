@@ -1,93 +1,78 @@
-local RS = game:GetService("ReplicatedStorage")
-local R = RS.Remotes
-local P = game:GetService("Players").LocalPlayer
-local Core = loadstring(game:HttpGet("https://raw.githubusercontent.com/1f0yt/community/main/Uilibs/fluxlib.txt"))()
-local UI = Core:Window("🐲 PetCore v1.0", "Created by Artyom & GPT", Color3.fromRGB(87, 136, 255), Enum.KeyCode.RightControl)
-local Main = UI:Tab("🚀 Генерация", "rbxassetid://6026568198")
-local Stats = UI:Tab("📊 Статистика", "rbxassetid://6026568198")
+local R = game:GetService("ReplicatedStorage").Remotes
+local s = 0
 
--- Метрика
-local counter = 0
-local turboOn = false
+warn("🧪 НАЧИНАЕМ ТЕСТЫ ПОЛНОГО ВЗЛОМА...")
 
--- 🔁 Turbo генерация
-Main:Toggle("🔥 Turbo генерация яиц (OnGeneratePet)", false, function(state)
-    turboOn = state
-    task.spawn(function()
-        while turboOn do
-            if R:FindFirstChild("OnGeneratePet") then
-                R.OnGeneratePet:FireServer()
-                counter += 1
-            end
-            task.wait(0.05)
-        end
-    end)
-end)
+-- 1. OnGeneratePet
+if R:FindFirstChild("OnGeneratePet") then
+    R.OnGeneratePet:FireServer()
+    warn("🧬 OnGeneratePet: УСПЕХ")
+    s += 1
+else
+    warn("⚠️ OnGeneratePet НЕ найден")
+end
+wait(1)
 
--- 🧠 Подмена функции updateHatchSpeed
-Main:Button("🧠 Hook updateHatchSpeed", function()
-    for _,v in pairs(getgc(true)) do
-        if typeof(v)=="function" and islclosure(v) then
-            local info = debug.getinfo(v)
-            if info.name and info.name:lower():find("updatehatchspeed") then
-                hookfunction(v, function(...)
-                    warn("🧠 Hook: updateHatchSpeed подавлен")
-                    return 0.01
-                end)
-                warn("✅ Hook установлен на:", info.name)
-                break
-            end
+-- 2. ClaimDailyEgg
+if R:FindFirstChild("ClaimDailyEgg") then
+    R.ClaimDailyEgg:FireServer()
+    warn("🎁 DailyEgg: вызван")
+    s += 1
+end
+wait(1)
+
+-- 3. ClaimQuestReward x3
+if R:FindFirstChild("ClaimQuestReward") then
+    for i = 1, 3 do
+        R.ClaimQuestReward:FireServer()
+        warn("🎯 QuestReward: #" .. i)
+        wait(0.2)
+    end
+    s += 1
+end
+
+-- 4. Mush/Sub Boost
+if R:FindFirstChild("ClaimMushBoost") then R.ClaimMushBoost:FireServer() warn("🌿 MushBoost") s += 1 end
+if R:FindFirstChild("ClaimSubBoost") then R.ClaimSubBoost:FireServer() warn("🔋 SubBoost") s += 1 end
+wait(1)
+
+-- 5. Генератор
+if R:FindFirstChild("SetGeneratorOn") then
+    R.SetGeneratorOn:FireServer()
+    warn("⚙️ Генератор: активирован")
+    s += 1
+else
+    warn("⚠️ Генератор НЕ найден")
+end
+if R:FindFirstChild("SetGeneratorEgg") then
+    R.SetGeneratorEgg:FireServer("Basic")
+    warn("🥚 GeneratorEgg: Basic отправлено")
+    s += 1
+end
+wait(1)
+
+-- 6. Подмена HatchSpeed через глобал
+getgenv().HatchSpeed = 100
+warn("🌐 HatchSpeed установлен вручную = 100")
+
+-- 7. Поиск и hook updateHatchSpeed
+local hooked = false
+for _,v in pairs(getgc(true)) do
+    if typeof(v)=="function" and islclosure(v) then
+        local info = debug.getinfo(v)
+        if info.name and info.name:lower():find("updatehatchspeed") then
+            hookfunction(v, function(...)
+                warn("🧠 Hook: updateHatchSpeed — подмена на 0.01")
+                return 0.01
+            end)
+            warn("✅ Hook установлен: "..info.name)
+            hooked = true
+            s += 1
+            break
         end
     end
-end)
+end
+if not hooked then warn("⚠️ updateHatchSpeed не найден для hook") end
 
--- 🌐 Глобальная подмена HatchSpeed
-Main:Button("🌐 getgenv().HatchSpeed = 100", function()
-    getgenv().HatchSpeed = 100
-    warn("🌐 HatchSpeed установлен вручную: 100")
-end)
-
--- 🧪 Получить DailyEgg и Boosts
-Main:Button("🎁 ClaimDailyEgg + Boosts", function()
-    if R.ClaimDailyEgg then R.ClaimDailyEgg:FireServer() end
-    if R.ClaimMushBoost then R.ClaimMushBoost:FireServer() end
-    if R.ClaimSubBoost then R.ClaimSubBoost:FireServer() end
-    warn("🎁 Бонусы активированы")
-end)
-
--- 🧬 Включить генератор
-Main:Button("⚙️ Generator ON", function()
-    if R.SetGeneratorOn then R.SetGeneratorOn:FireServer() end
-    if R.SetGeneratorEgg then R.SetGeneratorEgg:FireServer("Basic") end
-    warn("⚙️ Генератор активирован")
-end)
-
--- 📈 ClaimQuestReward loop
-Main:Button("🔁 10x ClaimQuestReward", function()
-    for i=1,10 do
-        if R.ClaimQuestReward then
-            R.ClaimQuestReward:FireServer()
-            warn("🎯 QuestReward #" .. i)
-            wait(0.1)
-        end
-    end
-end)
-
--- 📊 Отображение статистики
-Stats:Label("📦 Генераций выполнено:")
-Stats:Button("🔄 Обновить счётчик", function()
-    warn("📦 Генераций:", counter)
-end)
-
-Stats:Button("🔄 Сбросить счётчик", function()
-    counter = 0
-    warn("📦 Счётчик обнулён")
-end)
-
-Main:Button("❌ Убрать интерфейс", function()
-    for _,v in pairs(game.CoreGui:GetChildren()) do
-        if v.Name:lower():find("flux") then
-            v:Destroy()
-        end
-    end
-end)
+-- Финал
+warn("✅ Тест завершён. Всего успешных операций: "..s)
