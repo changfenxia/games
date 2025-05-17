@@ -38,7 +38,7 @@ spawn(function()
             if drop:IsA("Part") and drop.Name:lower():find("drop") then
                 pcall(function()
                     R.StoneDrop:FireServer(drop)
-                    warn("💰 Drop:", drop.Name)
+                    -- warn("💰 Drop:", drop.Name)
                 end)
             end
         end
@@ -51,7 +51,7 @@ spawn(function()
         for _, u in ipairs(upgs) do
             pcall(function()
                 R.BuyUpgrade:FireServer(u)
-                warn("⬆️ Upgrade:", u)
+                -- warn("⬆️ Upgrade:", u)
             end)
         end
     end
@@ -59,10 +59,10 @@ end)
 
 spawn(function()
     while wait(5) do
-        pcall(function() R.ClaimDailyEgg:FireServer() warn("🎁 DailyEgg") end)
-        pcall(function() R.ClaimQuestReward:FireServer() warn("🎯 QuestReward") end)
-        pcall(function() R.ClaimMushBoost:FireServer() warn("🍄 MushBoost") end)
-        pcall(function() R.ClaimSubBoost:FireServer() warn("💊 SubBoost") end)
+        pcall(function() R.ClaimDailyEgg:FireServer()) end)
+        pcall(function() R.ClaimQuestReward:FireServer()) end)
+        pcall(function() R.ClaimMushBoost:FireServer()) end)
+        pcall(function() R.ClaimSubBoost:FireServer()) end)
     end
 end)
 
