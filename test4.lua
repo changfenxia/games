@@ -1,11 +1,12 @@
-print("🧪 Remote Tester + Spy запущен")
+print("🧪 Remote Tester2 + Instant GUI AutoClose (no wait)")
 
 local RS = game:GetService("ReplicatedStorage")
 local R = RS.Remotes
 local CG = game:GetService("CoreGui")
+local P = game:GetService("Players").LocalPlayer
 
 local UI = Instance.new("ScreenGui", CG)
-UI.Name = "RemoteTesterSpy"
+UI.Name = "RemoteTesterInstantClose"
 UI.ResetOnSpawn = false
 
 local function makeBtn(label, y, fn)
@@ -20,37 +21,57 @@ local function makeBtn(label, y, fn)
     B.MouseButton1Click:Connect(fn)
 end
 
-makeBtn("🧬 AutoFuse → true", 100, function()
-    print("➡️ AutoFuse: true")
-    pcall(function() R.AutoFuse:FireServer(true) end)
+makeBtn("🛍 Открыть 3 яйца (ID 5)", 100, function()
+    print("➡️ Покупка 3 яиц подряд")
+    for i = 1, 3 do
+        pcall(function() R.BuyEgg:FireServer(5) end)
+        wait(0.2)
+    end
 end)
 
-makeBtn("🛠 SetAutoFuse → true", 140, function()
-    print("➡️ SetAutoFuse: true")
-    pcall(function() R.SetAutoFuse:FireServer(true) end)
+makeBtn("🎲 HatchEgg (рандом)", 160, function()
+    local petName = "RandomPet_" .. math.random(1000, 9999)
+    local val1 = math.random(1, 300)
+    local val2 = math.random(1, 300)
+    print("➡️ HatchEgg:", petName, val1, val2)
+    pcall(function()
+        R.HatchEgg:FireServer(3, petName, val1, val2, false, nil, false, false, false, 0, false, nil)
+    end)
 end)
 
-makeBtn("⚙ SetFilterSetting_Fuse → {}", 180, function()
+makeBtn("🎲 AutoFuse → random bool", 200, function()
+    local value = (math.random() > 0.5)
+    print("➡️ AutoFuse:", value)
+    pcall(function() R.AutoFuse:FireServer(value) end)
+end)
+
+makeBtn("🎲 SetAutoFuse → random bool", 240, function()
+    local value = (math.random() > 0.5)
+    print("➡️ SetAutoFuse:", value)
+    pcall(function() R.SetAutoFuse:FireServer(value) end)
+end)
+
+makeBtn("⚙ SetFilterSetting_Fuse → {}", 280, function()
     print("➡️ SetFilterSetting_Fuse: {}")
     pcall(function() R.SetFilterSetting_Fuse:FireServer({}) end)
 end)
 
-makeBtn("🥚 SetGeneratorEgg → MythicEgg", 220, function()
+makeBtn("🥚 SetGeneratorEgg → MythicEgg", 320, function()
     print("➡️ SetGeneratorEgg: MythicEgg")
     pcall(function() R.SetGeneratorEgg:FireServer("MythicEgg") end)
 end)
 
-makeBtn("🐣 HatchFirstEgg", 260, function()
-    print("➡️ HatchFirstEgg")
-    pcall(function() R.HatchFirstEgg:FireServer() end)
+-- Реагировать сразу на появление кнопки "Continue"
+P.PlayerGui.ChildAdded:Connect(function(child)
+    child.DescendantAdded:Connect(function(desc)
+        if desc:IsA("TextButton") and desc.Text == "Continue" then
+            print("✅ Автонажатие на 'Continue'")
+            desc:Activate()
+        end
+    end)
 end)
 
-makeBtn("🛍 BuyEgg → 3", 300, function()
-    print("➡️ BuyEgg: 3")
-    pcall(function() R.BuyEgg:FireServer(3) end)
-end)
-
--- 🔍 Подключаемся ко всем RemoteEvent.OnClientEvent для шпионажа
+-- Шпионим за OnClientEvent
 for _, remote in pairs(R:GetChildren()) do
     if remote:IsA("RemoteEvent") then
         pcall(function()
