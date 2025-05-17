@@ -21,43 +21,43 @@ local function makeBtn(label, y, fn)
     B.MouseButton1Click:Connect(fn)
 end
 
-makeBtn("🛍 Открыть 100 яйца (ID 8)", 130, function()
+makeBtn("🛍 Открыть 100 яйца (ID 8)", 80, function()
     print("➡️ Покупка 99 яиц подряд")
     for i = 1, 100 do
         pcall(function() R.BuyEgg:FireServer(8) end)
     end
 end)
 
-makeBtn("🛍 Открыть 100 яйца (ID 7)", 130, function()
+makeBtn("🛍 Открыть 100 яйца (ID 7)", 110, function()
     print("➡️ Покупка 3 яиц подряд")
     for i = 1, 100 do
         pcall(function() R.BuyEgg:FireServer(7) end)
     end
 end)
 
-makeBtn("🛍 Открыть 3 яйца (ID 6)", 100, function()
+makeBtn("🛍 Открыть 3 яйца (ID 6)", 140, function()
     print("➡️ Покупка 3 яиц подряд")
     for i = 1, 10 do
         pcall(function() R.BuyEgg:FireServer(6) end)
     end
 end)
 
-makeBtn("🛍 Открыть 3 яйца (ID 5)", 130, function()
+makeBtn("🛍 Открыть 3 яйца (ID 5)", 170, function()
     print("➡️ Покупка 3 яиц подряд")
     for i = 1, 10 do
         pcall(function() R.BuyEgg:FireServer(5) end)
     end
 end)
 
-makeBtn("🎲 HatchEgg (рандом)", 160, function()
-    local petName = "RandomPet_" .. math.random(1000, 9999)
-    local val1 = math.random(1, 300)
-    local val2 = math.random(1, 300)
-    print("➡️ HatchEgg:", petName, val1, val2)
-    pcall(function()
-        R.HatchEgg:FireServer(1)
-    end)
-end)
+-- makeBtn("🎲 HatchEgg (рандом)", 160, function()
+--     local petName = "RandomPet_" .. math.random(1000, 9999)
+--     local val1 = math.random(1, 300)
+--     local val2 = math.random(1, 300)
+--     print("➡️ HatchEgg:", petName, val1, val2)
+--     pcall(function()
+--         R.HatchEgg:FireServer(1)
+--     end)
+-- end)
 
 -- Реагировать сразу на появление кнопки "Continue"
 P.PlayerGui.ChildAdded:Connect(function(child)
