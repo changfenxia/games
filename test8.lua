@@ -13,7 +13,7 @@ local flags = {}
 
 local function makeBtn(label, y, key, action, count)
     local B = Instance.new("TextButton", UI)
-    B.Size = UDim2.new(0, 260, 0, 36)
+    B.Size = UDim2.new(0, 180, 0, 30)
     B.Position = UDim2.new(0, 20, 0, y)
     B.Text = label
     B.BackgroundColor3 = Color3.fromRGB(50, 150, 255)
@@ -29,15 +29,15 @@ local function makeBtn(label, y, key, action, count)
                 for i = 1, count do
                     pcall(action)
                 end
-                wait(5)
+                wait(3)
             end
         end)
     end)
 end
 
 -- Кнопки запуска циклов
-makeBtn("🔁 Яйцо ID 2 ×380 каждые 5с", 80, "egg2", function() R.BuyEgg:FireServer(2) end, 380)
-makeBtn("🔁 Яйцо ID 7 ×380 каждые 5с", 130, "egg7", function() R.BuyEgg:FireServer(7) end, 380)
+makeBtn("🔁 Яйцо ID 2 ×380 каждые 5с", 80, "egg2", function() R.BuyEgg:FireServer(2) end, 200)
+makeBtn("🔁 Яйцо ID 7 ×380 каждые 5с", 130, "egg7", function() R.BuyEgg:FireServer(7) end, 200)
 makeBtn("🔁 Яйцо ID 6 ×10 каждые 5с", 180, "egg6", function() R.BuyEgg:FireServer(6) end, 10)
 makeBtn("🔁 Яйцо ID 5 ×10 каждые 5с", 230, "egg5", function() R.BuyEgg:FireServer(5) end, 10)
 
