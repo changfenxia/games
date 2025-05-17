@@ -13,7 +13,7 @@ local flags = {}
 
 local function makeBtn(label, y, key, action, count)
     local B = Instance.new("TextButton", UI)
-    B.Size = UDim2.new(0, 280, 0, 36)
+    B.Size = UDim2.new(0, 180, 0, 30)
     B.Position = UDim2.new(0, 20, 0, y)
     B.Text = label
     B.BackgroundColor3 = Color3.fromRGB(50, 150, 255)
