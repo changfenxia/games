@@ -5,7 +5,7 @@ local U = Instance.new("ScreenGui", game.CoreGui)
 local B = Instance.new("TextButton", U)
 B.Size = UDim2.new(0, 150, 0, 40)
 B.Position = UDim2.new(0, 20, 0, 200)
-B.Text = "🔄 Собрать яйца"
+B.Text = "🔄 Собрать яйца!"
 B.BackgroundColor3 = Color3.new(0.2, 0.6, 1)
 
 local function collectEggs()
