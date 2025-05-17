@@ -24,7 +24,7 @@ end
 makeBtn("🛍 Открыть 3 яйца (ID 7)", 100, function()
     print("➡️ Покупка 3 яиц подряд")
     for i = 1, 3 do
-        pcall(function() R.BuyEgg:FireServer(7) end)
+        pcall(function() R.BuyEgg:FireServer(6) end)
     end
 end)
 
@@ -34,7 +34,7 @@ makeBtn("🎲 HatchEgg (рандом)", 160, function()
     local val2 = math.random(1, 300)
     print("➡️ HatchEgg:", petName, val1, val2)
     pcall(function()
-        R.HatchEgg:FireServer(3)
+        R.HatchEgg:FireServer(1)
     end)
 end)
 
